@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/home"
+        android:icon="@drawable/home"
+        android:title="Home" />
+    <item
+        android:id="@+id/news"
+        android:icon="@drawable/news_svgrepo_com"
+        android:title="New" />
+    <item
+        android:id="@+id/library"
+        android:icon="@drawable/library_svgrepo_com__1_"
+        android:title="Library" />
+    <item
+        android:id="@+id/rating"
+        android:icon="@drawable/trophy_svgrepo_com"
+        android:title="Rating" />
+    <item
+        android:id="@+id/info"
+        android:icon="@drawable/info_square_svgrepo_com"
+        android:title="Info" />
+
+
+</menu>
