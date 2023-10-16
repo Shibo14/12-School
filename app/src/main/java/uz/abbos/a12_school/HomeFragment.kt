@@ -6,7 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import uz.abbos.a12_school.databinding.FragmentHomeBinding
 
 
@@ -14,8 +18,12 @@ class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding
-    private lateinit var mClassList: ArrayList<ClassData>
     private lateinit var classAdapter: ClassAdapter
+    private lateinit var mList: ArrayList<ClassData>
+
+
+    private val firebaseData = FirebaseDatabase.getInstance().getReference("Class")
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -24,33 +32,39 @@ class HomeFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
-        getInit()
+        loadDataTable()
         return binding!!.root
 
     }
 
-    private fun getInit() {
-        mClassList = ArrayList()
-        mClassList.add(ClassData("1"))
-        mClassList.add(ClassData("2"))
-        mClassList.add(ClassData("3"))
-        mClassList.add(ClassData("4"))
-        mClassList.add(ClassData("5"))
-        mClassList.add(ClassData("6"))
-        mClassList.add(ClassData("7"))
-        mClassList.add(ClassData("8"))
-        mClassList.add(ClassData("9"))
-        mClassList.add(ClassData("10"))
-        mClassList.add(ClassData("11"))
 
-        val myLayoutManager = GridLayoutManager(requireContext(), 2)
-        classAdapter = ClassAdapter(requireContext(), mClassList)
-        binding!!.rewClassTable.apply {
-            adapter = classAdapter
-            layoutManager = myLayoutManager
-        }
+
+    private fun loadDataTable() {
+
+        mList = ArrayList()
+
+        firebaseData.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                mList.clear()
+                for (i in snapshot.children) {
+                    val data = i.getValue(ClassData::class.java)
+                    mList.add(data!!)
+
+                }
+
+                binding?.prgClass?.visibility = View.GONE
+
+                classAdapter = ClassAdapter(mList, requireContext())
+                binding!!.rewClass.setHasFixedSize(true)
+                binding!!.rewClass.layoutManager = GridLayoutManager(requireContext(),2)
+                binding!!.rewClass.adapter = classAdapter
+
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+        })
 
     }
-
-
 }
