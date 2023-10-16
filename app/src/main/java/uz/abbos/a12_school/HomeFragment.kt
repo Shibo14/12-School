@@ -21,7 +21,8 @@ class HomeFragment : Fragment() {
     private lateinit var classAdapter: ClassAdapter
     private lateinit var mList: ArrayList<ClassData>
 
-
+ //5 = 1
+    //
     private val firebaseData = FirebaseDatabase.getInstance().getReference("Class")
 
 
@@ -33,6 +34,7 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
         loadDataTable()
+
         return binding!!.root
 
     }
